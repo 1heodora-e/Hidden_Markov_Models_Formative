@@ -73,3 +73,17 @@ Each model is trained using the Baum–Welch algorithm (Expectation–Maximisati
 ## The Viterbi algorithm uses dynamic programming to find the single most likely hidden state sequence for a given observation sequence. Classification proceeds by: (1) scoring the test sequence against all four models, (2) selecting the highest log-likelihood activity, and (3) running Viterbi on the winning model to decode the internal state path.
 
 ## 5. Results and Interpretation
+
+### 5.1 Evaluation on Unseen Test Data
+
+The trained models were evaluated on **16 completely unseen recordings** from a separate session. Predictions were made by scoring each recording against all four models and selecting the highest log-likelihood activity.
+| Activity | No. of Samples | Sensitivity | Specificity | Overall Accuracy |
+|-----------|----------------|-------------|-------------|------------------|
+| Still | 4 | 50.0% | 100.0% | 87.5% |
+| Standing | 4 | 100.0% | 83.3% | 87.5% |
+| Walking | 4 | 100.0% | 100.0% | 100.0% |
+| Jumping | 4 | 100.0% | 100.0% | 100.0% |
+| **Overall** | 16 | — | — | **87.5%** |
+The model correctly classified **14 out of 16** test recordings (87.5% overall accuracy). Both misclassifications involved still recordings predicted as standing — the only activity pair sharing near-zero motion feature values. Walking and jumping were both classified with 100% sensitivity and specificity.
+
+---
