@@ -29,3 +29,10 @@ Data were collected using the **Sensor Logger app (iOS)** by both group members 
 ### 2.2 Sampling Rate Harmonisation
 
 Both devices recorded at approximately 100 Hz (10 ms intervals). Minor timing inconsistencies between accelerometer and gyroscope streams were resolved using `merge_asof` with a 15 ms tolerance, followed by linear interpolation onto a fixed 10 ms grid. This brings all recordings to exactly 100 Hz, ensuring that window sizes and extracted features are directly comparable across participants and sessions.
+
+### 2.3 Windowing Strategy
+
+- **Window size:** 50 samples (0.5 seconds) with 50% overlap (25-sample step).
+- At 100 Hz, a 0.5-second window captures at least one full stride cycle during walking (~2 Hz cadence) and one jump cycle (~1 Hz), while remaining short enough to detect activity transitions without blurring them across window boundaries.
+
+---
