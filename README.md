@@ -87,3 +87,21 @@ The trained models were evaluated on **16 completely unseen recordings** from a 
 The model correctly classified **14 out of 16** test recordings (87.5% overall accuracy). Both misclassifications involved still recordings predicted as standing — the only activity pair sharing near-zero motion feature values. Walking and jumping were both classified with 100% sensitivity and specificity.
 
 ---
+
+## 6. Repository Structure
+
+```
+
+Hidden_Markov_Models_Formative/
+├── README.md
+├── requirements.txt
+├── HMM_Activity_Recognition_Notebook.ipynb
+├── data/
+│ ├── Train/
+│ │ ├── Theodora/
+│ │ └── Victoria/
+│ └── Test/
+│ ├── Theodora/
+│ └── Victoria/
+└── [Report PDF]
+```
