@@ -51,3 +51,15 @@ Seven features are extracted from each window, computed from the scalar accelera
 | Spectral Entropy | Frequency (FFT) | Spectrum complexity (walking periodic, still noisy) |
 
 ---
+
+## 4. HMM Setup and Implementation
+
+### 4.1 Model Components
+
+| Component              | Symbol | Type       | Value / Method                              |
+| ---------------------- | ------ | ---------- | ------------------------------------------- |
+| Hidden States          | Z      | Discrete   | 4: still, standing, walking, jumping        |
+| Observations           | X      | Continuous | 7-feature vector per 0.5s window            |
+| Transition Matrix      | A      | 4×4 matrix | Uniform init, learned via Baum–Welch        |
+| Emission Probabilities | B      | Gaussian   | Diagonal covariance, learned via Baum–Welch |
+| Initial Probabilities  | π      | 4-vector   | Uniform init, learned via Baum–Welch        |
