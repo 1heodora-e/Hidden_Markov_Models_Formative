@@ -67,3 +67,7 @@ Seven features are extracted from each window, computed from the scalar accelera
 ### 4.2 Baum–Welch Training
 
 Each model is trained using the Baum–Welch algorithm (Expectation–Maximisation) via `hmmlearn`, with 4 hidden states per model, diagonal covariance matrices, convergence threshold ε = 1e-4 (training stops when the log-likelihood improvement between iterations falls below ε), and a maximum of 200 iterations. All four models converged; walking required more iterations due to its feature similarity with standing.
+
+### 4.3 Viterbi Decoding
+
+## The Viterbi algorithm uses dynamic programming to find the single most likely hidden state sequence for a given observation sequence. Classification proceeds by: (1) scoring the test sequence against all four models, (2) selecting the highest log-likelihood activity, and (3) running Viterbi on the winning model to decode the internal state path.
