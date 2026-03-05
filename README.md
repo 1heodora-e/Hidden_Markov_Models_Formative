@@ -25,3 +25,7 @@ Data were collected using the **Sensor Logger app (iOS)** by both group members 
 | Victoria Fakunle | iPhone 12 Pro (iOS) | ~100 Hz | 4 | 25 train + 8 test |
 | Theodora Egbunike | iPhone 12 Pro Max (iOS) | ~100 Hz | 4 | 25 train + 8 test |
 | **Total** | — | 100 Hz (harmonised) | 4 | 50 train + 16 test |
+
+### 2.2 Sampling Rate Harmonisation
+
+Both devices recorded at approximately 100 Hz (10 ms intervals). Minor timing inconsistencies between accelerometer and gyroscope streams were resolved using `merge_asof` with a 15 ms tolerance, followed by linear interpolation onto a fixed 10 ms grid. This brings all recordings to exactly 100 Hz, ensuring that window sizes and extracted features are directly comparable across participants and sessions.
