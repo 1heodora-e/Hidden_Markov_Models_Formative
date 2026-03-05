@@ -63,3 +63,7 @@ Seven features are extracted from each window, computed from the scalar accelera
 | Transition Matrix      | A      | 4×4 matrix | Uniform init, learned via Baum–Welch        |
 | Emission Probabilities | B      | Gaussian   | Diagonal covariance, learned via Baum–Welch |
 | Initial Probabilities  | π      | 4-vector   | Uniform init, learned via Baum–Welch        |
+
+### 4.2 Baum–Welch Training
+
+Each model is trained using the Baum–Welch algorithm (Expectation–Maximisation) via `hmmlearn`, with 4 hidden states per model, diagonal covariance matrices, convergence threshold ε = 1e-4 (training stops when the log-likelihood improvement between iterations falls below ε), and a maximum of 200 iterations. All four models converged; walking required more iterations due to its feature similarity with standing.
