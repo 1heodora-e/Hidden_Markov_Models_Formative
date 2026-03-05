@@ -36,3 +36,18 @@ Both devices recorded at approximately 100 Hz (10 ms intervals). Minor timing in
 - At 100 Hz, a 0.5-second window captures at least one full stride cycle during walking (~2 Hz cadence) and one jump cycle (~1 Hz), while remaining short enough to detect activity transitions without blurring them across window boundaries.
 
 ---
+
+## 3. Feature Extraction
+
+Seven features are extracted from each window, computed from the scalar acceleration magnitude |a| = √(ax² + ay² + az²). This magnitude is orientation-independent, reducing sensitivity to how the phone is held. All features are **Z-score normalised** (StandardScaler) so that features on different scales contribute equally to the HMM emission probabilities.
+| Feature | Domain | Why It Distinguishes Activities |
+|--------------------|----------|-----------------------------------------------------------|
+| RMS | Time | Motion intensity (still low, jumping very high) |
+| Standard Deviation | Time | Variability (still near 0, dynamic activities higher) |
+| SMA | Time | Total movement magnitude (orientation-independent) |
+| Zero Crossing Rate | Time | Oscillation rate (walking cyclic, still flat) |
+| Dominant Frequency | Frequency (FFT) | Walking ~2 Hz, jumping ~1 Hz, still near 0 Hz |
+| Spectral Energy | Frequency (FFT) | Total spectral power (very high for jumping) |
+| Spectral Entropy | Frequency (FFT) | Spectrum complexity (walking periodic, still noisy) |
+
+---
