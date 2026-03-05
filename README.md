@@ -71,3 +71,5 @@ Each model is trained using the Baum–Welch algorithm (Expectation–Maximisati
 ### 4.3 Viterbi Decoding
 
 ## The Viterbi algorithm uses dynamic programming to find the single most likely hidden state sequence for a given observation sequence. Classification proceeds by: (1) scoring the test sequence against all four models, (2) selecting the highest log-likelihood activity, and (3) running Viterbi on the winning model to decode the internal state path.
+
+## 5. Results and Interpretation
