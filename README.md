@@ -105,3 +105,20 @@ Hidden_Markov_Models_Formative/
 │ └── Victoria/
 └── [Report PDF]
 ```
+
+---
+
+## 7. Setup & Run
+
+# Clone the repository
+
+git clone https://github.com/1heodora-e/Hidden_Markov_Models_Formative.git
+cd Hidden_Markov_Models_Formative
+
+# Install dependencies
+
+pip install -r requirements.txt
+
+# Run the notebook (Jupyter or Colab)
+
+jupyter notebook HMM_Activity_Recognition_Notebook.ipynb
