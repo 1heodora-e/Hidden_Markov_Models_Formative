@@ -11,6 +11,7 @@ March 4, 2026
 ## 1. Background and Motivation
 
 Falls and prolonged sedentary behaviour among elderly individuals represent a major public health concern, particularly in settings where continuous clinical monitoring is not feasible. Our group's use case focuses on **passive activity monitoring for elderly care**: a smartphone carried by an elderly person continuously recognises their movement states (still, standing, walking, or jumping), enabling caregivers to be alerted to prolonged inactivity or sudden high-impact events.
+
 Hidden Markov Models are well-suited to this task because human activity evolves as a temporal sequence of hidden states, each producing observable sensor readings. By jointly modelling the temporal transitions between activities and the probabilistic sensor emissions within each activity, an HMM can robustly infer the most likely activity sequence from a continuous, noisy stream of accelerometer and gyroscope data without requiring network connectivity or manual annotation.
 
 ---
@@ -20,11 +21,12 @@ Hidden Markov Models are well-suited to this task because human activity evolves
 ### 2.1 Dataset Overview
 
 Data were collected using the **Sensor Logger app (iOS)** by both group members across two separate recording sessions: a training session and a held-out test session. Each participant recorded four activities: **still** (phone on flat surface), **standing**, **walking**, and **jumping**, for 5–10 seconds per trial. This yielded **50 labelled training files** and **16 unseen test files**.
-| Participant | Device (OS) | Sampling Rate | Activities | Files |
-|-------------------|-------------------|---------------|------------|--------------------|
-| Victoria Fakunle | iPhone 12 Pro (iOS) | ~100 Hz | 4 | 25 train + 8 test |
-| Theodora Egbunike | iPhone 12 Pro Max (iOS) | ~100 Hz | 4 | 25 train + 8 test |
-| **Total** | — | 100 Hz (harmonised) | 4 | 50 train + 16 test |
+
+| Participant       | Device (OS)             | Sampling Rate       | Activities | Files              |
+| ----------------- | ----------------------- | ------------------- | ---------- | ------------------ |
+| Victoria Fakunle  | iPhone 12 Pro (iOS)     | ~100 Hz             | 4          | 25 train + 8 test  |
+| Theodora Egbunike | iPhone 12 Pro Max (iOS) | ~100 Hz             | 4          | 25 train + 8 test  |
+| **Total**         | —                       | 100 Hz (harmonised) | 4          | 50 train + 16 test |
 
 ### 2.2 Sampling Rate Harmonisation
 
@@ -40,15 +42,16 @@ Both devices recorded at approximately 100 Hz (10 ms intervals). Minor timing in
 ## 3. Feature Extraction
 
 Seven features are extracted from each window, computed from the scalar acceleration magnitude |a| = √(ax² + ay² + az²). This magnitude is orientation-independent, reducing sensitivity to how the phone is held. All features are **Z-score normalised** (StandardScaler) so that features on different scales contribute equally to the HMM emission probabilities.
-| Feature | Domain | Why It Distinguishes Activities |
-|--------------------|----------|-----------------------------------------------------------|
-| RMS | Time | Motion intensity (still low, jumping very high) |
-| Standard Deviation | Time | Variability (still near 0, dynamic activities higher) |
-| SMA | Time | Total movement magnitude (orientation-independent) |
-| Zero Crossing Rate | Time | Oscillation rate (walking cyclic, still flat) |
-| Dominant Frequency | Frequency (FFT) | Walking ~2 Hz, jumping ~1 Hz, still near 0 Hz |
-| Spectral Energy | Frequency (FFT) | Total spectral power (very high for jumping) |
-| Spectral Entropy | Frequency (FFT) | Spectrum complexity (walking periodic, still noisy) |
+
+| Feature            | Domain          | Why It Distinguishes Activities                       |
+| ------------------ | --------------- | ----------------------------------------------------- |
+| RMS                | Time            | Motion intensity (still low, jumping very high)       |
+| Standard Deviation | Time            | Variability (still near 0, dynamic activities higher) |
+| SMA                | Time            | Total movement magnitude (orientation-independent)    |
+| Zero Crossing Rate | Time            | Oscillation rate (walking cyclic, still flat)         |
+| Dominant Frequency | Frequency (FFT) | Walking ~2 Hz, jumping ~1 Hz, still near 0 Hz         |
+| Spectral Energy    | Frequency (FFT) | Total spectral power (very high for jumping)          |
+| Spectral Entropy   | Frequency (FFT) | Spectrum complexity (walking periodic, still noisy)   |
 
 ---
 
@@ -70,20 +73,24 @@ Each model is trained using the Baum–Welch algorithm (Expectation–Maximisati
 
 ### 4.3 Viterbi Decoding
 
-## The Viterbi algorithm uses dynamic programming to find the single most likely hidden state sequence for a given observation sequence. Classification proceeds by: (1) scoring the test sequence against all four models, (2) selecting the highest log-likelihood activity, and (3) running Viterbi on the winning model to decode the internal state path.
+The Viterbi algorithm uses dynamic programming to find the single most likely hidden state sequence for a given observation sequence. Classification proceeds by: (1) scoring the test sequence against all four models, (2) selecting the highest log-likelihood activity, and (3) running Viterbi on the winning model to decode the internal state path.
+
+---
 
 ## 5. Results and Interpretation
 
 ### 5.1 Evaluation on Unseen Test Data
 
 The trained models were evaluated on **16 completely unseen recordings** from a separate session. Predictions were made by scoring each recording against all four models and selecting the highest log-likelihood activity.
-| Activity | No. of Samples | Sensitivity | Specificity | Overall Accuracy |
-|-----------|----------------|-------------|-------------|------------------|
-| Still | 4 | 50.0% | 100.0% | 87.5% |
-| Standing | 4 | 100.0% | 83.3% | 87.5% |
-| Walking | 4 | 100.0% | 100.0% | 100.0% |
-| Jumping | 4 | 100.0% | 100.0% | 100.0% |
-| **Overall** | 16 | — | — | **87.5%** |
+
+| Activity    | No. of Samples | Sensitivity | Specificity | Overall Accuracy |
+| ----------- | -------------- | ----------- | ----------- | ---------------- |
+| Still       | 4              | 50.0%       | 100.0%      | 87.5%            |
+| Standing    | 4              | 100.0%      | 83.3%       | 87.5%            |
+| Walking     | 4              | 100.0%      | 100.0%      | 100.0%           |
+| Jumping     | 4              | 100.0%      | 100.0%      | 100.0%           |
+| **Overall** | 16             | —           | —           | **87.5%**        |
+
 The model correctly classified **14 out of 16** test recordings (87.5% overall accuracy). Both misclassifications involved still recordings predicted as standing — the only activity pair sharing near-zero motion feature values. Walking and jumping were both classified with 100% sensitivity and specificity.
 
 ---
@@ -91,34 +98,66 @@ The model correctly classified **14 out of 16** test recordings (87.5% overall a
 ## 6. Repository Structure
 
 ```
-
 Hidden_Markov_Models_Formative/
 ├── README.md
 ├── requirements.txt
 ├── HMM_Activity_Recognition_Notebook.ipynb
 ├── data/
-│ ├── Train/
-│ │ ├── Theodora/
-│ │ └── Victoria/
-│ └── Test/
-│ ├── Theodora/
-│ └── Victoria/
-└── [Report PDF]
+│   ├── Train/
+│   │   ├── Theodora/
+│   │   └── Victoria/
+│   └── Test/
+│       ├── Theodora/
+│       └── Victoria/
 ```
 
 ---
 
 ## 7. Setup & Run
 
+```bash
 # Clone the repository
-
 git clone https://github.com/1heodora-e/Hidden_Markov_Models_Formative.git
 cd Hidden_Markov_Models_Formative
 
 # Install dependencies
-
 pip install -r requirements.txt
 
 # Run the notebook (Jupyter or Colab)
-
 jupyter notebook HMM_Activity_Recognition_Notebook.ipynb
+```
+
+**Google Colab:** Use the badge at the top or clone the repo in the first cell.
+
+**Task Allocation Sheet:** https://docs.google.com/spreadsheets/d/1TyXA1iM9qKK4_6CBR7d_5pWL5yQFUWcs4C7CyGjlwSU/edit?usp=sharing
+
+---
+
+## 8. GitHub Repository
+
+https://github.com/1heodora-e/Hidden_Markov_Models_Formative
+
+---
+
+## 9. Team
+
+- **Victoria Fakunle**
+- **Theodora Egbunike**
+
+---
+
+## 10. Task Allocation & GitHub Contribution
+
+| Task                                           | Assigned To                          |
+| ---------------------------------------------- | ------------------------------------ |
+| Data Collection & CSV organisation (Victoria)  | Victoria Fakunle                     |
+| Data Collection & CSV organisation (Theodora)  | Theodora Egbunike                    |
+| Data loading, alignment & resampling to 100 Hz | Theodora Egbunike                    |
+| Feature extraction (time & frequency domain)   | Theodora Egbunike                    |
+| Data visualisation (sections 3.1–3.5)          | Victoria Fakunle                     |
+| HMM model component definitions                | Victoria Fakunle                     |
+| Baum–Welch training with convergence check     | Victoria Fakunle                     |
+| Viterbi decoding & sequence visualisations     | Theodora Egbunike                    |
+| Model evaluation on unseen test data           | Victoria Fakunle                     |
+| Analysis and reflection (Section 6)            | Theodora Egbunike                    |
+| Report write-up                                | Theodora Egbunike & Victoria Fakunle |
