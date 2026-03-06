@@ -133,8 +133,6 @@ jupyter notebook HMM_Activity_Recognition_Notebook.ipynb
 
 **Google Colab:** Use the badge at the top or clone the repo in the first cell.
 
-**Task Allocation Sheet:** https://docs.google.com/spreadsheets/d/1TyXA1iM9qKK4_6CBR7d_5pWL5yQFUWcs4C7CyGjlwSU/edit?usp=sharing
-
 ---
 
 ## 8. GitHub Repository
