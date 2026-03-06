@@ -6,6 +6,10 @@ Victoria Fakunle and Theodora Egbunike
 March 4, 2026
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/1heodora-e/Hidden_Markov_Models_Formative/blob/main/HMM_Activity_Recognition_Notebook.ipynb)
 
+**HMM Report:** https://docs.google.com/document/d/1xGycP5MecGCNUMprN0h3CunDAjRjOX645lUptCAwwDU/edit?usp=sharing
+
+**Task Allocation Sheet:** https://docs.google.com/spreadsheets/d/1TyXA1iM9qKK4_6CBR7d_5pWL5yQFUWcs4C7CyGjlwSU/edit?usp=sharing
+
 ---
 
 ## 1. Background and Motivation
